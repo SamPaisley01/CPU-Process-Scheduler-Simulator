@@ -1,13 +1,16 @@
 package scheduler.structures;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 
-public class MinHeap<T extends Comparable<T>> {
+public class MinHeap<T> {
 
     private final ArrayList<T> heap;
+    private final Comparator<T> comparator;
 
-    public MinHeap() {
+    public MinHeap(Comparator<T> comparator) {
         this.heap = new ArrayList<>();
+        this.comparator = comparator;
     }
 
     public void insert(T value) {
@@ -46,7 +49,7 @@ public class MinHeap<T extends Comparable<T>> {
     private void heapifyUp(int index) {
         while (index > 0) {
             int parent = (index - 1) / 2;
-            if (heap.get(index).compareTo(heap.get(parent)) < 0) {
+            if (comparator.compare(heap.get(index), heap.get(parent)) < 0) {
                 swap(index, parent);
                 index = parent;
             } else {
@@ -62,10 +65,10 @@ public class MinHeap<T extends Comparable<T>> {
             int right = 2 * index + 2;
             int smallest = index;
 
-            if (left < size && heap.get(left).compareTo(heap.get(smallest)) < 0) {
+            if (left < size && comparator.compare(heap.get(left), heap.get(smallest)) < 0) {
                 smallest = left;
             }
-            if (right < size && heap.get(right).compareTo(heap.get(smallest)) < 0) {
+            if (right < size && comparator.compare(heap.get(right), heap.get(smallest)) < 0) {
                 smallest = right;
             }
             if (smallest != index) {
